@@ -1,0 +1,32 @@
+Linux Resume Contents
+	IpConfigurationa and management
+	Crontab
+	Configuration management- Running and creating Manifest files
+	Kickstart Installation to automate the process
+	Network File sharing 
+    Apache Web server implementation with SSl Layer
+	Logical Volume management
+    DNS and Public Key Sharing 
+    DHCP Configuration
+    
+
+1. Introduction 
+ . Linux and its flavors with applications - 
+ . Users and accounts and permissions 
+ . Basic Folders -
+ . Soft and Hard link
+2.Shell and Scripting
+3.LVM and DiscPartioning 
+ . RAID 0 and RAID 1
+ . Ext3,Ext4,Types 
+ . Mounting 
+4.HTTP,TCP,DNS,Firewall, Apache ,Tomcat, Iptables,PortNumbers and Subneting,SSH
+5.NFS ,FTP,Kickstart,JumpStart,Public Key Sharing
+6.Yum,Rpm,Grep,Crontab,find,netstat
+7.DevOps Introduction 
+ . Iaas,Paas , Saas,Infrastructure as code
+    Continuous deployment,Automation,Monitoring Security
+8.Puppet
+9. Salt
+10.curl,wget,vi editor,awk,echo,Environment Variables
+

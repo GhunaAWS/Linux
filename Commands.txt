@@ -1,0 +1,882 @@
+1. selinux : Selinux Management tool
+   lsmod : lists all modules
+   insmod : load a module manually
+   rmmod : removes modules that are not currently used
+      -f : removes modules that are currently in use
+      -w : wait for all users of the module to stop using that module
+      -s : output to the syslog file instead to the console
+   depmod : program generates module dep and map
+      -a : search for all modules specified by modules.conf
+      -A : compare the times modules were modified and run depmod -a
+      -n : writes the output of depmod  to terminal instead of overwriting the modules.dep
+   modprobe : loads modules to kernel
+      -a : loads all module names passed at command line
+      -c : configuration of currently loaded modules
+      -n : generates text output action is not performed
+      -v : verbose information of command performed
+   modinfo : display information on currently loaded modules
+      -a : information about author of a module
+      -d : description of a module
+      -h : help information about a module
+      -p : parameters available to a module
+      -v : version information of a module
+   kmod : in built kernerd daemon in newer versions
+   setenforce 1 : enable enforcing
+   sestatus : gives the status of selinux
+   semanage login -l : gives the list of user mapping
+   setenforce 0 : enable permissive mode
+   getenforce : gets the current enforcing state
+   getsebool : get the boolean values
+   setsebool : sets the boolean values
+   togglesebool : flips the value of the boolean
+   sealert : se troubleshoot client tool   
+   chcon : change the context
+   restorecon : restore the context
+   ls -Z : list the selinux context for directories
+   ps -ef -Z : list the selinux context for processes
+   id -Z : list selinux context for users
+   cp -Z : 
+
+2. /etc/services : displays all the assigned ports
+    /etc/protocols : contains the list of all protocols
+    /etc/fstab : contains all the entries of the mounted partitions
+    /etc/inittab : to change the runlevel
+    /etc/sudoers : to change user permissions
+   /etc/init.d : location of all installed services
+   /etc/group : identifying the group
+
+
+3. /etc/passwd : stores the user information, x indicates password is stored in shadow file
+    /etc/shadow : stores encrypted password and password aging information
+    * : replacing encrypted portion in shadow file with * restricts the user access
+    getent : command displays users and groups from ldap
+    pwconv : converts the passwd to shadow format
+    pwunconv : converts back to the traditional format
+    pwck : checks the integrity of the password file
+    chage : can be used to set the restrictions on user account password
+          -m : sets minimum password age
+          -M : sets maximum password age
+          -W : sets reminder time 
+          -I : sets grace time
+          -E yyyy-mm-dd : sets expiration date for the user password
+          -l : lists the information about the user password in user readable format
+
+4. write username : sends the message to the user
+    mesg y/n : allow or deny receiving message
+    at : runs commands at specific time
+    atq : lists the queue
+    atrm : removes jobs from the queue
+    batch : 
+
+5. route  : show / manipulate the ip routing table
+    route -n : displays the current kernel routing table for ipv4
+    route -A inet6 -n : displays the current kernel routing table for ipv6
+    route add default gw ipv4addr dev eth0 : to add ipv4 address to the default gateway
+    route -A inet6 add default gw ipv6addr dev eth0 : to add ipv6 address to the default gateway
+    /etc/sysconfig/network-scripts/route-eth0 : ipv4 route location
+    echo 'default via ipv4addr dev eth0' > /etc/sysconfig/network-scripts/route-eth0 : changing ipv4 route
+    /etc/sysconfig/network-scripts/route6-eth0 : ipv6 route location
+    echo 'default via ipv6addr dev eth0' > /etc/sysconfig/network-scripts/route6-eth0 : changing ipv6 route
+    /proc/sys/net/ipv4/ip_forward : displays current status of the ipv4 routing
+    echo 1 > /proc/sys/net/ipv4/ip_forward : enables the ipv6 routing
+    /proc/sys/net/ipv6/conf/all/forwarding : displays the status of the ipv6 routing
+    echo 1 > /proc/sys/net/ipv6/conf/all/forwarding : enables the ipv6 routing
+    /etc/sysctl.conf : to permanently change the route settings
+    net.ipv4.ip_forward = 1 : permanently enables routing for ipv4
+    net.ipv6.conf.all.forwarding = 1 : permanently enables routing for ipv6
+
+6. diff file1 file2 : displays the difference between the two files
+    uniq file : removes duplicate lines from the file
+    sort file : sorts the order in the file
+    file file : gives the information about the file
+    script : records login session
+        exit : exits the login session
+    unix2dos file : converts unix file to the dos file format
+    dos2unix file : converts dos file to unix file format
+    fmt : formats simple file
+    od : dumps the contents of the file
+
+7. iptables : tool for ipv4 packet filtering and NAT
+    iptables -L : lists the current iptable values
+    service iptables stop : to stop the firewalls in red hat
+    service iptables start : starting the firewalls in red hat
+    rcSuSEfirewall2 status : displays the status of the firewall in SuSE
+    rcSuSEfirewall2 start : starts the firewall in SuSE
+    rcSuSEfirewall2 stop : stops the firewall in SuSE
+   /etc/sysconfig/iptables : contains the list of default iptables
+   system-config-firewall : configuring firewall in gui
+   Built-in chains for filter table:-
+   INPUT : built-in chain for the packets that are targeted for the host
+   FORWARD : built-in chain for the forwarded packets
+   OUTPUT : built-in chain for the packets that are generated locally 
+   Built-in chains for nat table:-
+   PREROUTING : alters network packets when they arrive
+   OUTPUT : alters locally generated packets before they are sent out
+   POSTROUTING : alters network packets before they are sent out
+   Built-in chains for mangle table:-
+   INPUT : alters network packets that are targeted for the host
+   OUTPUT : alters locally-generated network packets before they are sent out 
+   FORWARD : alters network packets routed through the host
+   PREROUTING : alters incoming network packets before they are routed
+   POSTROUTING : alters network packets before they are sent out
+   RH-Firewall-1-INPUT : user-defined chains created by security level configuration tool
+       -A INPUT -j RH-Firewall-1-INPUT : any input jumps to the firewall chain
+       -A FORWARD -j RH-Firewall-1-INPUT : any forwarded data jumps to this firewall chain
+   ACCEPT : let the packet through
+   REJECT : packet is dropped and an error message is sent to packet originator
+   DROP : drops the packet and nothing is sent back to the packet originator
+   QUEUE : to pass the packet to userspace
+   RETURN : stop traversing this chain and resume at the next rule in the previous chain
+   Parameters:-
+        -j : specifies the target of the rule, what to do when the condition is matched. target can be user-defined chain like ACCEPT, REJECT or any user-defined chain
+        -i : name of the interface through which packet was received
+        -o : name of the interface through which packet is going to be sent 
+        -s : originating address can be a ip address, hostname, network name 
+        -d : destination address can be a ip address, hostname, network name 
+        -p : protocol of the rule or of the packet to check. can be tcp, udp, udplite, icmp, esp, ah, sctp or all. protocol numbers as in /etc/protocols
+        -m : matches the condition   
+             --sport : source port
+             --dport : destination port
+             --state : state of the packet like NEW, INVALID, ESTABLISHED, RELATED.
+        -t : for table filter, nat, mangle
+     -A : append one or more rules to the end of the selected chain
+     -D : delete one or more rules from the selected chain
+     -I : insert one or more rules in the selected chain 
+     -R : replace the rule in the selected chain
+     ! : negative of the current action
+
+8. /etc/sysconfig/network-scripts : location of network configurations
+    /etc/hosts : to change the hostname 
+    /etc/network : to change the hostname details
+    /etc/sysconfig/network-scripts/ifg-eth0 :
+          ONBOOT="yes"
+          IPADDR="ipaddr"
+          NETMASK="netmask"
+          GATEWAY="gateway"
+    service network restart : restarting the network
+
+9. /etc/protocols : contains list of protocols with protocol numbers
+
+10. /etc/nsswitch.conf : name service switch file used to configure name service info like hosts and dns, passwd and shadow
+     /etc/host.conf : order hosts bind(Berkeley Internet Name Domain)
+     /etc/hosts : files contains list of hosts and free to add more by the user
+     dig @server name type  : DNS lookup utility, ipaddress of DNS server, domain in question, DNS record
+     dig -x ipaddress : reverse lookup
+     rndc :
+     /etc/resolv.conf : DNS servers are configured in this file
+     host -C domainname : gets SOA(Start Of Authority) data 
+     host ipaddress : reverse lookup
+     host -v domain name : displays verbose information
+     bind, bind-chroot, bind-utils, caching-nameserver : rpm packages required for setting up bind
+
+11. ps : displays the process
+    pstree : displays the process tree
+    fuser : shows the files and the processes using those files
+    top : displays all the linux tasks
+    sar : collects and displays all system activities statistics
+    sadc : this is sar backend tool that does data collection
+    sa1 : store system activity in binary data file
+    sa2 : creates daily summary of the collected statistics
+    iostat : generates CPU I/O statistics
+    mpstat : displays CPU statistics
+    pidstat : reports statistics based on the process id
+    nfsiostat : displays NFS I/O statistics
+    cifsiostat : generates CIFS statistics
+    pgrep : gives the process id based on a pattern
+    pidof : displays the process id of a process
+    ipcs : interprocess communication
+         -a : all
+         -s : semaphore
+         -q : queue message
+
+12. echo $PATH : displays the path
+
+13. command > filename : to redirect the output of a command to a file
+     command >> filename : append used to append the output to a file
+     command | command : redirects the output of first command as input to the second command
+     read < filename : accepts input from a file
+     command &> filename : sends output to a file
+     command 2> filename : sends errors to a file
+     command > filename 2> errorfilename : sends output to filename and errors to errorfilename
+     command > filename 2>&1 : sends output and error message to the same file
+     /dev/null : location can be used to redirect the output from never seeing
+     command & : command ending with & makes the command to run in background
+
+14. which comm : prints the location of the binary of the command
+      type comm : prints the location of the binary of the command
+      whereis comm : prints the location of the binary of the command
+      whatis comm : gives the information about the program
+      /bin : contains all the binaries of the commands
+      /boot : consists of the all the boot files and the kernel
+      /dev : devices directory contains all the information about the devices
+      /home : home directory contains all the users created
+      /lib : libraries directory consists of all the libraries required for application
+      /mnt : default mount directory for mounting devices
+      /opt : consists of all the add on packages and third party applications
+      /proc : contains all the hardware properties information
+      /root : home directory for root user
+      /sbin : system binaries consists of binaries
+      /tmp : temporary directory used to copy files temporarily
+      /var : consists of log files
+          /var/log/messages : contains all the messages from the system
+      /etc : contains all the configuration files of the applications and services
+       
+15. 0 - Halt
+      1 - Single User Mode
+      2 - Multi User Mode
+      3 - Multi User Mode with Networking
+      4 - User defined
+      5 - GUI 
+      6 - Reboot
+
+16. rpm : redhat packet manager
+        -i : install
+        -v : verbose
+        -h : hash
+        -U : upgrade
+        -e : erase
+        -q : query
+        -l : list
+        -p : packages
+        -a : all
+      rpm2cpio : extract files from rpm packages
+      cpio : copies files to and from archives
+        -i : extract
+        -v : verbose
+        -d : create directories where needed
+      rpm -qlp package : diplays all the packages inside rpm package
+      rpm2cpio package | cpio -ivd ./required package : extracting file from rpm package
+
+17. yum : yellowdog update modifier
+      install package : to install packages
+      remove package : removes packages
+      upgrade package : upgrades packages
+      list : prints list of packages
+      repolist : lists the available repositories
+
+18. crontab : used to schedule tasks to run
+       -l : lists the crontab tasks for a user
+       -u : specify the user
+       -r : removes the crontab entries for a user
+       -e : edit crontab and add entries and remove entries
+       -v : displays the last edited time 
+         * * * * * : min(0-59) hr(0-23) day(1-31) month(1-12) week(0-6, sun-sat) 
+    crontab filename : takes the cron entries from the file 
+    min hr dd mm week command/script : entering a crontab entry
+    /etc/crontab : consists of crontabs for users
+    /var/spool/cron/username : file containing cron entries for that users
+      
+19. dmidecode : to find the system information like serial number and other
+        -t : type like system, bios, processor, memory module, cache, 17 etc
+
+20. free : command can be used to display the ram information
+        -m : displays information in MB
+      /proc/meminfo : contains the memory information and swap information
+      /proc/cpuinfo : contains the cpu information
+
+21. smartctl : control and monitor utility for smart disks
+        -i : prints the device model number, serial number, firmware version, 
+        -a : prints all smart information
+        -x : prints all smart and non smart information about the device
+
+22. hdparm : get/set SATA/IDE device parameters
+        -I : current information directly from drive
+        -T : perform cache read timings
+        -t : perform device read timings
+
+23. /proc/scsi/scsi : contains info related to hard disk
+    /proc/ide0/hda : contains various information on hard drives
+    /proc/mdstat : contains the information about the software raid
+    lshw -class disk -class storage : displays all disks and storage controllers
+    lshw -short -C disk : lists all the installed drives including hard drives and cd/dvd
+
+24. find : can be used to search for files
+         -not or ! : not the name
+         -name : searches with the name
+         -user : searches for files owned by user
+         -group : searches for files owned by group
+         -perm : searches for particular permission
+         -mtime : searches with last modified time n being the day
+         -mmin : searches with last modified minutes
+         -maxdepth : specifies the levels of directories to parse takes number 
+         -exec : executes commands
+         -type : looks for a specific type of file
+            f : searches for files
+            d : searches for directories
+         \( -name '' -o -name '' \)
+      locate : similar to find command searches for files
+      slocate : secure version of the locate
+      apropos keyword : searches for the command based on the keyword
+      ln : to link to files or directories with a soft link or hard link
+          -s : to create a symbolic link
+      unlink : removes the link created using ln command
+      readlink : displays value of a symbolic link
+      mktemp : make temporary file
+          -d : make a directory instead of a file
+      startx : starts a x-window session
+      uname : displays the information about the current kernel 
+          -n : prints the bit information of the kernel
+      dmesg : prints the kernel ring buffer or boot information
+      lspci : lists all pci devices
+      dmraid : used to discover, configure and activate software raid
+        -r : lists all discovered RAID devices with format, RAID level, sectors used etc
+      rpcinfo : displays all the port information
+        -p : displays all the open ports on the system
+    uptime : displays the uptime of the system
+
+25. sax2 : to configure/change resolution on suse linux
+    mdadm : to manage raid devices
+       -a : adds a disk to the current array
+       -C : creates a new RAID array
+       -D : prints details of an array
+       -G : changes the size or shape of an active array
+       -f : fails a disk in the array
+       -l : specifies level of RAID array to create
+       -n : specifies the devices in the RAID array
+       -q : specifies not to show output
+       -S : stops an array
+       -v : provides verbose output
+    fsck : to check and repair filesystems and not to be performed on mounted FS
+    tune2fs : to adjust tunable filesystem parameters on ext2 and ext3 filesystem
+
+26. zypper : install manager similar to yum in suse
+          help : provides overview of the commands
+      zypper options command comm-options arguments : general syntax of zypper
+          install package : to install a package and to update individual package
+          remove package : to remove a package
+          --non-interactive install package : install overrides the interaction
+          source-install package : to install a source package of a package
+          source-install --no-build-deps package : installs without build dependencies
+          up : integrates all available patches to the system
+          up -t package : updates all the packages
+          list-updates -t packages : lists all the new packages available 
+          lr : lists all repositories known to system
+          ar URI Alias : to adding a repository
+          rr Alias : to remove a repository from the list
+          nr : to rename the repository for alias only
+          shell : to prevent rereading all the database zypper can be run in shell mode
+             zypper> command argument : in zypper shell direct command can be used
+             ~/zypper_history : contains the history of the zypper commands
+      yast : install manager for suse
+
+27. chkconfig : can be used to configure services to start at startup
+         --list : displays list of services and the runlevel status
+         service_name on/off : turns on/off the service to start at boot
+    service : manage the daemons running on the system
+          daemon status : displays the status of given daemon
+          --status-all : displays the status of all daemons running 
+          start/stop/restart : performs given action on the daemon     
+    ntsysv : similar to chkconfig menu driven service manager
+    initctl : command similar to service with options to start, stop, restart, list services
+
+28. unzip file.war : to unzip the zip, war files
+      zip file.war location/of/files : to convert files into zip
+      tar -xzvf file.tar.gz : to extract tar.gz files
+      tar -czvf file.tar.gz /location : creates a tar.gz file
+            -x : extract
+            -z : extract/create gzip
+            -j : extract/create bz2 
+            -v : verbose
+            -f : force
+            -t : lists contents of an archive
+      gzip -c file : converts a file into .gz file
+           -cd file.txt.gz : displays contents of gz file
+      gunzip file.gz : unzip the .gz file
+
+29. useradd : to add a new user
+    usermod : to modify a user account
+    userdel : to delete a user account
+    groupadd : to create a new group
+    groupmod : to modify a group definition on the system
+    groupdel : to delete a group
+    groups user : displays the group of the user
+    su : to login to superuser/root
+    su username : to login to a different user 
+    passwd : to change the passwd of the user
+    gpasswd : change password of the group
+    id : prints real and effective user and group IDs
+       -u : prints userid
+       -n : prints user name
+    finger : list users and gives detailed information about user
+    whoami : displays the current
+    w : lists the users
+    who : lists the user
+      
+30. .bash_profile : to run scripts at the firsttime login of the user
+      .bash_logout : to run scripts at the logout of the user
+      .bashrc : to run scripts each time a new terminal is opened or during login
+       
+31. date : displays date
+         +%y%m%d : displays date in yymmdd format
+         -u --date="1970-01-01 N sec GMT" : converts 'N' seconds into date
+         -d @ N : converts N seconds from '1970-01-01' into date
+         %s : converts a given date into seconds from '1970-01-01'
+         +%T --set='hh:mm:ss' : sets the new time
+         -d "yyyy/mm/dd" +%j : converts a given date to julian date
+
+32. dirs : displays the list of currently directories in the stack
+      pushd : pushes the directory to the stack and cd to the dir
+      pushd /dir > /dev/null : pushes the directory into the stack
+      popd : pop the top directory from the stack and cd to the new top directory
+      popd > /dev/null : pops the directory from the stack
+
+33. fdisk : partition table manipulator
+       -l : lists all the partitions
+       -h : specifies the number of heads on the disk
+       -b : specifies the sector size of disk
+    fdisk /dev/partittion : enables to modify the partition
+    cfdisk : disk partition table manipulator
+    du : disk usage displays the file sizes
+    df : displays file system disk usage space
+        -h : human readable form
+        -P :
+        -H :
+    parted : disk partitioning tool
+        -l : lists all partition tables detected
+        -s : never prompts for interaction (useful for scripting)
+    partprobe : reread the partition table
+        -d : doesn't inform the operating system
+        -s : prints a summary of contents
+
+34. xm subcomm --arg parameter : xen management to manage the xen virtual machines
+          help : displays short help message
+          info : displays the information about the xen host
+          list : prints information about a domain/ all
+             --long : long list r - running, b - blocked, p - paused, s - shutdown, c - crashed, d - dying
+          console : connects to the domain to detach Ctrl + ]
+          create : starts a domain not necessarily the guest operating system. takes args/cfg file
+          destroy : forcefully shutdowns the domain
+          domid : converts a domain name to domain id
+          domname : converts a domain id to a domain name
+          mem-max : sets the maximum amount of mmemory
+          mem-set : set the domain to the used memory
+          pause : pause a domain
+          reboot : reboots a domain
+              -a : reboots all domains
+              -w : wait for reboot before returning
+          restore : restores a domain from save state
+          save : saves a running domain to a state file
+          shutdown : gracefully shuts down a domain
+              -a : shutsdown all the domains 
+              -w : wait for the domain to complete shutdown before returning
+          unpause : moves a domain from a paused state
+          dmesg : reads the message buffer
+          top : displays the realtime monitoring of domains
+    
+    
+35. vm-install : to install a virtual machine in xen environment
+          -c : number of virtual CPU
+          -d : disk, VDEV, type(disk), mode(r, w), MB    
+          -m : initial memory for the RAM
+          -M : maximum memory of the RAM
+          -n : name of the vm
+          --nic : virtual network adapter
+          -u : UUID for a vm
+          -v : para virtualized
+          -V : full virtualized
+          -o : type of the guest os
+          --os-settings : os settings passed during installation time
+          --background : run in the background
+          -s URL : installation source of the operating system
+          -O : lists valid os types for '-o' argument  
+ 
+36. virt-viewer : displays the graphical console for a virtual machine
+      virsh : management user interface
+      vm-install-jobs : manages the background vm installation jobs.
+
+37. dd : convert and copy a file
+      dd if=/dev/cdrom of=/dir/name.iso : creating iso image from a disk
+      mount src_fs dst_dir : mounting a filesystem on to a directory
+      mount -o loop /dir/name.iso /mount/dir : mounting a iso image
+      umount dst_dir : unmounting the mounted filesystem
+    dd if=/dev/zero of=/dev/partition bs=512 count=1
+    mkisofs : creates iso images
+
+38. lp : lpring print source
+         -d : destination printer name
+      lp -d printername printfile : syntax of the lp command
+      /etc/printcap : contains the printer information
+      printername: lp=printername@hostname : for network printers
+      printername: lp=printername : for local printers
+      service lpd : printer daemon
+    lpr file : prints the file
+    lpr : sends the file to the printer specified
+       -#n : n is number specifies the number of copies
+       -h : suppreses the burst page
+       -J : job name to print on the burst page
+       -l : prints control characters embedded in a document and ignores page break
+       -m : sends an email on completion of the job
+       -p : prints using a specific printer
+    lpq : lists the jobs in the printer queue
+       -Pprintername : displays job associated with a printer
+       username : print jobs belong to specific user
+    lprm : removes the print job from the queue
+       -Pprintername : name of the printer
+       -a all : removes jobs from all queues
+    lpc : command that aborts the current job
+       clean : flushes the current job
+       status alias : status for specific printer
+       enable/disable lp : enables/disables printqueue
+       start/stop alias : starts/stops the printqueue
+       up alias : enable and start printing
+       down alias msg : diable and stop printing and displays message in the queue
+       restart alias : kills and restarts printers spooling daemon
+       abort : same as stop but aborts current printing jobs
+       help : displays help information
+       topq : speeds up the jobs by moving them up in the queue
+    lpadmin : command line utility for managing cups
+        -c class : adds named printer to the printer class
+        -D infor : contexual description of the printer
+        -E : enable printer to enable printjob
+        -i : copies the named interface script
+        -L : description of where printer is located
+        -m : parameter specifies printers standard driver
+        -p : specifies local ppd file
+        -r : removes the named printer from printer class
+        -v : sets url that device uses to communicate with printer
+    cupsenable : to start printers and classes
+    cupsdisable : to stop printers and classes
+        -E : forces encryption of a connection to server
+        -c : cancels printjobs on destination mentioned
+        -h : specifies server and port that you want to use
+        -r : sets message associated with stopped state
+    cupsaccept : specifies to accept jobs to specific destination
+    cupsreject : specifies to deny jobs sent to specific dest
+    gs : ghost script program
+    mpage : reduces the size of the standard text
+    azps : converts txt files to post script
+      -o : to pipe its output
+    pr : paginates file for printing
+    ttysn : serial printers
+    lpn : parallel printer
+    lpd : daemon that handles printing
+    /var/spool/lpd : directory to which point jobs are spooled
+    /dev : printers mount location
+    /etc/printcap : consists of filters and settings and each entry has its own queue
+    alias :\ : alias of the printer
+       :lp=/dev/printer :\ : specifies the location of printing device
+       :sp=/var/spool/lpd/alias :\ : specifies location spool directory stores document before sending to hardware
+       :if=/var/spool/lpd/lp/filter :\ : defines a filter to be applied before printing
+       :mc=num :\ : sets the limit of number of copies
+       :sh :\ : prevents from printing burst pages
+       :lf=/var/log/lpd-errorlog : location of log files with printing errors
+    remotealias :\ : alias of the remote printer
+       :rm=machinename :\ : 
+       :rp=remoteprinter :\ : name of the remote printer
+       :lp=/dev/null :\ : since remote printer is used local printer is set to /dev/null
+       :sd=/var/spool/lpd/alias : location the jobs are spooled
+    lptest : sends test output to the printer
+        errs : file logs printing failures
+        lock : locks spooling directory and prevents sending printjobs simultaneosly
+        seq : contains job numbers used by lpr to assign new print jobs
+        status : file stores status messages lpc status command display
+    /etc/hosts.lpd : lists machines that are allowed to use the printer connected to the server
+    trusted machine extension user1 user2 : adding entry to the the hosts.lpd file
+    + : gives print access to all machines
+    - machinename : excludes that machine from trusted list
+    
+    
+39. mt : control magnetic tape drive operation
+         -f device : name of the tape device host:/path/to/drive, user@host:path/to/drive
+
+40. mail : to send a mail to the user
+         -s : subject
+         -c : copy
+         -b : blind carbon copy
+         -- -f mailaddress : from address
+      mail -s subject user@domain < /location of file
+
+41. chmod : changes the file permissions
+        4 : read
+        2 : write
+        1 : execute
+        +x : execute
+        +w : write
+        +r : read
+        +t : sticky bit
+      chmod 1755 filename : syntax of the chmod, 1 at the front indicates sticky bit.
+    chown : changes the ownership of a file
+      chown user:group filename : gives the file ownership to the specified user and the group
+    chgrp : changes group ownership
+
+42. cut : removes sections from each line of file
+         -d : delimiter 
+         -f n : field seperated by delimiter and get the nth field
+         -f n- : get everything after the nth field
+         --complement :
+         -s : 
+      cut -d ' ' -f n string : num is the field number seperated by delimiter(space) in the string
+    rev : reverses a string
+
+43. ip : shows routing, devices, policy routing and tunnels
+      addr show : displays the ip address
+      addr add ipaddr dev dev_name : creating virtual ip address dev is the device like eth0
+      addr del ipaddr dev dev_name : deletes the virtual ip address
+      
+44. ifconfig eth0:1 ipaddr : creates a virtual ip but will be removed when restarted
+             eth0:1 down : removes the virtual ip address
+             eth0:1 ipaddr netmask netmask-addr : virtual ip with a netmask 
+    iwconfig : configures wireless network interface
+
+45. umask : displays or sets file/dir creation mask
+    umask 022 : file permissions will be set as (7 - 0)(7 - 2)(7 - 2)
+
+46. stty : set the options for terminal device interface
+      -a : prints all current settings in human readable format
+      -g : prints all settings in stty readable format
+    stty erase <-(backspace) : enables backspace
+    tty : displays terminal pathname and information about the terminal
+    tput : initialize a terminal or query terminfo database
+    tset : reset terminal initialization
+    set -o vi : enables backspace
+
+47. chfont : change the default font
+
+48. alias string='comm' : makes the string as alias to command
+
+49. export : exports the names to the subsequent executed command, environment variables
+        -p : lists all exported variables
+    printenv : displays environment variables
+    import : takes a screen shot of the window
+    sleep : mentions a delay of a specified time
+
+50. openssl : certificate and key generation tool manages certificates and keys
+    openssl genrsa -des3 -out name.key size(1024, 2048 etc): generates a rsa private key prompts for password
+    openssl req -new -key name.key -out name.csr : generates certificate signing request with some questions
+    openssl rsa -in name1.key -out name2.key : name1.key key with password and name2.key key without password
+    openssl x509 -req -days nmbr -in name.csr -signkey name.key -out name.crt : generating self signed certificate
+    openssl pkcs12 -export -out name.p12 -inkey name.key -in name.crt : generating .p12 file private key and certificate
+    keytool : certificate and key management tool
+    keytool -genkey -v -alias name -keyalg rsa -validity nmbr -keystore /path/keystore -dname "CN=host, OU=organ, O=organ, L=city, ST=state, C=country" -storepass pass -keypass pass : creating a keystore
+    keytool -genkey -v -alias name -keyalg rsa -storetype pkcs12/jks -keystore /path/keystore -dname "CN=name, OU=name, O=org, L=city, ST=state, C=country" -storepass pass -keypass pass : creating a keystore/truststore
+    keytool -export -alias name -keystore /path/name -storetype pkcs12 -storepass pass -rfc -file name.crt : exporting cert
+    keytool -import -alias name -v -file name.crt -keystore /path/name -storepass pass : importing certs to trust store
+    keytool -list -keystore /path/keystore -storepass pass : lists all the certs in the truststore
+    keytool -printcert -file certname	: prints the cert
+
+51. yum install lvm2 : package for volume manager
+    pvcreate : creates a partition
+    pvscan : scans all disks for physical volumes
+    pvs : displays information about physical volumes
+    pvdisplay : displays all the available physical volumes
+    pvremove : removes a physical volume
+    pvmove : migrate from one disk to another
+    vgs : displays information about volume groups
+    vgcreate : creates a volume group
+    vgextend : extends a volume group
+    vgreduce : reduces a volume group
+    vgchange : changes attributes of a volume group
+    vgconvert : converting volume group metadata format
+    vgscan : scans all disks for available volume groups
+    vgdisplay : displays the volume groups
+    vgremove : removes the volume group
+    lvs : displays information about logical volumes
+    lvscan : scans for logical volumes
+    lvcreate : creates a logical volume
+         -s : creates a snapshot of the logical volume
+    mkfs -t ext2/ext3/ext4 lv_name : creates a filesystem
+    mkswap lv_name : creates a swap
+    lvextend : extends a logical volume
+    lvreduce : reduces a logical volume
+    lvresize : resize the logical volume
+    lvconvert : convert a logical volume from linear to mirror or snapshot
+    resize2fs lv_name : resizes after extending/reducing logical volume 
+    ext2online lv_name : resizing for the older versions of the redhat
+    lvchange : changes attributes of a logical volume
+    lvscan : scans all disks for available logical volumes
+    lvmdiskscan : scans for all logical volumes
+    lvdisplay : displays all the logical volumes
+    lvrename : renames a logical volume
+    lvremove : removes the logical volumes
+    /etc/lvm/lvm.conf : location of the lvm configuration file
+    clvmd : cluster logical volume manager daemon
+    lvmdumpconfig : displays the settings loaded after configuration file
+
+52. runlevel 0 : halt
+    runlevel 1 : single user mode
+    runlevel 2 : multiuser without networking
+    runlevel 3 : multiuser with networking
+    runlevel 4 : user defined
+    runlevel 5 : multiuser with networking and gui
+    runlevel 6 : reboot
+    init run_lvl : changes the run level
+    telinit run_lvl : changes the run level
+    who -r : gives the runlevel
+    /etc/rc.d/rc#.d : # is the runlevel from 0 to 6
+    K##daemon : kills the daemon when entered the runleve followed by the order
+    S##daemon : starts the daemon when entered the runlevel followed by the order
+
+53. setfacl : sets the acl to the directories and files
+    getfacl : gets the acl to the directories and files
+
+54. /proc : contains the files with system and process information
+    buddyinfo : contains information about buddy algorithm which handles memory fragmentation
+    bus : directory representing various buses on the system
+    fb : list of available framebuffers
+    cmdline : giving the boot options passed to the kernel
+    cpuinfo : cpu information
+    crypto : list of available cryptographic modules
+    devices : list of character and block devices sorted by device id
+    diskstats : information about logical disk devices
+    filesystems : list of filesystems supported at the time of listing
+    interrupts, iomem, ioports, irq : self explanatory details about the devices using system resources
+    meminfo : information of kernel managing memory information
+    modules : contains list of kernel modules currently loaded
+    mounts : list of currently mounted devices and their mount points
+    net : information about the network stack
+    partitions : partition information
+    scsi : gives information about the scsi or raid controller
+    self : symlink to the current process at /proc/PID where PID is the current process
+    slabinfo : statistics on the caches of the frequently used objects in the kernel
+    swaps : a list of active swap partitions
+    sysvipc : memory sharing and inter process communication information
+    uptime : length of the time the kernel has been running since boot and spent in idle mode
+    version : contains linux kernel version
+    cobalt : directory containing cobalt specific data
+    lcd : contents of the front panel lcd screen
+    /proc/PID : contains information about the process
+        cmdline : command that started the process
+        cwd : symlink of current working directory of the process
+        environ : environment variables that affect the process
+        exe : symlink to the original executable file if it still exist
+        fd : symlink for each open file descriptor
+        fdinfo : directory containing files which describe the position and flags for each open file descriptor
+        maps : information about mapped files and blocks
+        mem : process virtual memory can only be accessed by a ptracing process
+        root : symlink to the root path as seen by the process
+        status : basic information about a process
+        task : hard links to any tasks started by this process
+
+55. tree dir : displays the contents of a directory in tree format
+
+56. $(comm) : usage of the command to append to the file names
+
+57. gpg : encryption and signing tool
+         -e filename : encrypts a file
+         -d filename : decrypts a file
+
+58. nohup comm : runs commands even after logout
+    screen : dettach and reattach the screen
+       -r : reattach the screen
+       ctrl+a d : detach the screen
+    disown : 
+    indent : reformats the c program as flags entered
+    chroot : changes the root directory of a command
+    lsattr : lists attributes
+    ldd : prints shared library dependencies for a binary
+    chattr : changes attributes
+        -i : changes immutable bit for a file
+    quotacheck : scan a filesystem for disk usage and repair quota files
+    edquota : edit user quota
+    quotactl : manipulates disk quota
+    .bash_history : history of commands used by the user
+    chkrootkit : looks for rootkits
+
+59. lsof : lists openfiles and locked files
+    stat : detailed status of a file
+    rsync : synchronizes files on 2 systems
+    rcmd : runs remote command
+    rcp : performs remote copy
+    rsh : performs on remote shell
+    ~/.rhosts : 
+    /etc/hosts.equiv : 
+
+60. /boot/grub/grub.conf : main grub configuration file
+    /etc/grub.conf : softlink to the main configuration file
+    /etc/lilo.conf : linux loader is the bootloader configuration file
+    /boot/grub/menu.lst : softlink to the main configuration file
+    /lib/modules/kernelversion/modules.dep : database of available modules and any dependency
+    /etc/module.conf : changes the behavior of the modprobe and kerneld
+         options : options set for modprobe will be applied
+         keep : ignores requests to unload modules
+         delay : detemines time after which unused modules are removed
+
+61. getent : get entries from administrative database
+    strace : trace system calls and signals for debug. execution of the executable
+    truss : prints system calls and signals made by the command used for debugging
+    mknod : create a special or ordinary file
+    mknod /dev/null c 1 3 : creating /dev/null
+    
+62. grep : searches for a pattern from a file or output of a comm when used with |
+          -f : gets the pattern list from a file and searches files 
+     zgrep : greps contents of gz txt file
+     cat : displays contents of a file
+     less : displays contents of a file in less format
+     zless : displays contents of a gz file in less format
+     more : displays contents of a file in more format
+     zmore : displays contents of a file in more format
+
+63. nscd : name service cache daemon required for ldap authentication
+     nsswitch : name service switch
+
+64. vi : vi editor for editing text files
+    :s/pattern/string/ : searches for pattern and replaces with string
+    :%s/pattern/string/ : performs actions on each line of the file
+    :%s#searchstr#replacementstr# : replacing patterns containing / in vi editor
+    :%s/$/str/ : appends str at the end of each line
+    :%s/^/str/ : appends str at the beginning of each line
+
+65. wall "message" : displays message on the console for all users
+    write : send message to the user 
+
+66. md5sum : vefifies the hash of a file
+    > filename : dev nulling a file
+    xargs : builds and executes from the standard input. creates a continuous input
+
+67. netstat : gives network interface information and current established connections
+       -n : prints in numerics 
+       -a : prints all the connections active
+       -v : NIC information
+       -p : gives pid information
+       -l  : 
+    ethtool : gives NIC information
+    mii-tool : gives NIC information
+    nc : netcat command
+       -v : verbose option
+       -z : I/O scan
+       -w n : for the count
+    tcpdump : perform a tcp dump of packet
+       
+
+68. wget : non interactive network downloader
+      curl : transfer data from or to a server
+          -I : gives the head information
+  
+69. awk : word processing tool can be used to split a line and process the output
+       -F : specifies the field delimiter
+    awk '{print $n}' : by default delimits spaces and gives the nth column of the output
+    awk 'FNR>n && FNR<m' filename : prints the lines between m and n in a file
+
+70. tr : translate the given text used to remove binary values from the text file
+
+71. clush node 'command'		: cluster ssh command used to run commands on individual nodes or group of nodes
+         -w node1, node2 / @group		: running on a single or multiple nodes
+              node[1,2] / node[1-3]		: another way of running commands with clush for a group of servers with similar hostname
+         -g group			: calling a command on the group
+         -a				: runs the commands on all the nodes
+         --hostfile host_file		: takes a file containing list of individual hostnames as argument
+         -v				: verbose
+         -c/--copy /srcpath/file		: copying a file from clush master server to rest of the group of servers
+         --rcopy /srcpath/file		: reverse copies file from nodes to clush master server
+         --dest /destpath/file		: takes the destination location where to copy the files on destination nodes
+         -b				: consolidates the output from different nodes
+         --diff command		: performs a diff on cluster wide outputs
+         --progress			: will indicate the live progress of the command run
+         -o/--option			: to override any option mentioned in clush.conf configuration file
+         -l / --user			: runs the remote command as a specified user
+   command | clush                          : interactive mode sending an input to the clush CLI
+    /etc/clustershell                           : configuration file location of the clush
+        groups                          : file consists all the node files and different nodesets
+           group1: node                          :
+           group2: @group1, node2  :
+        clush.conf                   : contains the clustershell configuration
+     nodeset                          : computes nodeset operations
+             -l                                                : lists the nodeset groups
+             -e @group                             : expands the nodeset group
+             -f                                : folds the nodeset group
+ 
+72. xmllint                                              : checks the xml file for errors
+ 
+73. 
+ 
+74.
