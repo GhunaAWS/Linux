@@ -1,0 +1,51 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\ftech\fcharset77 Symbol;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\info
+{\author Chenna Rao Vemula}}\margl1440\margr1440\vieww33400\viewh18220\viewkind0
+\deftab720
+\pard\pardeftab720\pardirnatural\qc\partightenfactor0
+
+\f0\b\fs24 \cf0 ASSIGNMENT#3
+\b0 \
+\pard\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \
+1. Try running each of the following commands on your Linux system, one at a time. (You don't need to turn in the\
+output of the commands.) What is the last command doing? Describe what it does in one sentence. Remember\
+that you can read more about a command and its parameters by looking at its man page.\
+ls\
+ls -m\
+ls -1 (in this case, the -1 is the number 1, not a lowercase L)\
+\
+2. What is the full path of your home directory on this Linux box? Run an appropriate command to find out.\
+(Note: You can select text on the Terminal window and copy/paste it into your text editor. The terminal program\
+usually has a top menu bar where you can choose Edit 
+\f1 \uc0\u8594 
+\f0  Copy and Edit 
+\f1 \uc0\u8594 
+\f0  Paste.)\
+\
+3. What is the exact current date and time, as reported by this Linux box? Run a command to find out.\
+\
+4. Create a second user in the Linux .What other users have home directories on this Linux box? (Hint: Find out what other user directories exist\
+within the same parent folder as your home directory.) Provide a list of all such users in the format produced by\
+the ls command. If there are more than 5 users, listing the last 5 is sufficient.\
+\
+5. (Self-Discovery) What version of Linux does this computer use?\
+To find out, run the Linux uname command, which outputs various information about the current system.\
+It has various parameters that you can learn in its man page.\
+\
+6. List all files in the current directory, in "long listing format".\
+\
+7. List all files in the /var directory, in reverse alphabetical order.\
+\
+8. Copy the file numbers.txt from the current directory to the java subdirectory.\
+\
+9. Print a text calendar for the month of June, 2049.\
+\
+10. Copy all the text files (files whose names end with .txt) from the current folder to the website subdirectory.\
+11. The wc command outputs how many bytes, words, lines, etc. a file occupies.\
+12.Display the number of lines occupied by the file animals.txt .\
+\
+}
