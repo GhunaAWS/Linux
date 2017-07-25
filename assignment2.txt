@@ -1,7 +1,8 @@
+Write the Yum commands Syntax and different usages?
 
+Install the Java8 using yum command in Given Linux and Attach snapshots 
 
-1.Write the Yum commands Syntax and different usages?
-2.Install the Java8 using yum command in Given Linux and Attach snapshots 
-3.Install the services  Mavan ,docker,httpd,nginx,jenkins,AWSCLI,git,on the Linux and send the snapshots after installation with versions showing 
-4.How can we upgrade the Maven and Java for a given Linux ? Send the snapshots 
+Install the services  Mavan ,docker,httpd,nginx,jenkins,AWSCLI,git,on the Linux and send     	the snapshots after installation with versions showing 
+
+How can we upgrade the Maven and Java for a given Linux ? Send the snapshots 
 
